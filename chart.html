@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="echarts.js"></script>
+</head>
+<body>
+<style>
+#container  {float:left; width:100%;height:100%; }
+#main{float:left; margin-top:2%;width:45%; height:600px;background:#EBEBEB ;border-top:2px solid #CD661D}
+#main1 {float:left; margin-top:2%;margin-left:5%;width:45%;height:600px;background:#EBEBEB;border-top:4px solid #ADD8E6}
+</style>
+<section class="content-header">
+      <h1>
+                基地信息统计
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">统计报表</a></li>
+        <li class="active">基地信息统计</li>
+      </ol>
+    </section>
+<div id="container">
+ <div id="main"></div>
+ <div id="main1"></div>
+</div>	
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+		var myChart1 = echarts.init(document.getElementById('main1'));
+
+	var option= {
+    title : {
+        text: '  基地数量',
+        //subtext: '纯属虚构'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+    	y:'bottom',
+        data:['基地数量','人员数量']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            magicType : {show: true, type: ['line', 'bar']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            data : ['2011','2012','2013','2014','2015','2016','2017']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'人员数量',
+            type:'bar',
+            data:[40, 54, 66, 73, 79, 93,120],
+            markPoint : {
+                data : [
+                    {type : 'max', name: '最大值'},
+                    {type : 'min', name: '最小值'}
+                ]
+            },
+            markLine : {
+                data : [
+                    {type : 'average', name: '平均值'}
+                ]
+            }
+        },
+        {
+            name:'基地数量',
+            type:'bar',
+            data:[32, 40, 48, 59, 66, 79,90],
+            markPoint : {
+                data : [
+                        {type : 'max', name: '最大值'},
+           	             {type : 'min', name: '最小值'}
+                /*  {name : '年最高', value : 140, xAxis: 7, yAxis: 125, symbolSize:18},
+                    {name : '年最低', value : 42, xAxis: 1, yAxis: 45}
+                */ ]
+            },
+            markLine : {
+                data : [
+                    {type : 'average', name : '平均值'}
+                ]
+            }
+        }
+    ]
+};              
+         // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+        var option1 = {
+        	    title : {
+        	        text: '人员信息',
+        	        //subtext: '纯属虚构',
+        	        x:'left'
+        	    },
+        	    tooltip : {
+        	        trigger: 'item',
+        	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+        	    },
+        	    legend: {
+        	        orient : 'horizontal',
+        	        y : 'bottom',
+        	        data:['系统管理','云基地经理','云基地客户经理','云基地服务经理','二级主管','存量经营管理','合同商务','合作采购','资产管理','项目管理','云基地服务管理','二线运维','网络安全']
+        	    },
+        	    calculable : true,
+        	    series : [
+        	        {
+        	            name:'访问来源',
+        	            type:'pie',
+        	            radius : '60%',
+        	            center: ['50%', '50%'],
+        	            data:[
+        	                {value:30, name:'系统管理'},
+        	                {value:130, name:'云基地经理'},
+        	                {value:368, name:'云基地客户经理'},
+        	                {value:359, name:'云基地服务经理'},
+        	                {value:168, name:'二级主管'},
+        	                {value:135, name:'存量经营管理'},
+        	                {value:410, name:'合同商务'},
+        	                {value:234, name:'合作采购'},
+        	                {value:135, name:'资产管理'},
+        	                {value:468, name:'项目管理'},
+        	                {value:234, name:'云基地服务管理'},
+        	                {value:1548, name:'二线运维'},
+        	                {value:886, name:'网络安全'}
+        	            ]
+        	        }
+        	    ]
+        	};
+    	                    
+           // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option1);           
+    </script>
+</body>
+</html>
