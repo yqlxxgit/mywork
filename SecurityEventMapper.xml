@@ -1,0 +1,298 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- 
+    用户对象sqlMapper
+    namespace指向是mapper.java类
+ -->
+ <mapper namespace="com.huawei.ssm.mapper.SecurityEventMapper">
+ 	
+ 	<!-- 查询安全事件列表 -->
+ 	<select id="findSecurityEventList" resultType="SecurityEvent">
+ 		SELECT
+			eventid,
+			createdatetime,
+			updatedatetime,
+			lesseeipaddr,
+			warning,
+			features,
+			result,
+			eventtype,
+			eventnode,
+			eventlevel,
+			eventsource,
+			responsibility,
+			noderesponsibility,
+			lesseetype,
+			eventstatus,
+			lasttracedatetime,
+			warninglevel,
+			warningdays
+		FROM
+			t_securityevent
+			<where>
+				<if test="null != createDateTime and '' != createDateTime">
+					And createdatetime like concat(concat("%",#{createDateTime}),"%")
+				</if>
+				<if test="null != eventNode and '' != eventNode or 0== eventNode">
+					And eventnode = #{eventNode}
+				</if>
+				<if test="null != eventStatus and '' != eventStatus or 0== eventStatus">
+					And eventstatus = #{eventStatus}
+				</if>
+				<if test="null != warningLevel and '' != warningLevel or 0== warningLevel">
+					And warninglevel = #{warningLevel}
+				</if>
+			</where>
+ 	</select>
+ 	
+ 	<select id="findNodeList" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description text
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventnode';
+ 	</select>
+ 	
+ 	<select id="findSourceList" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description text
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventsource';
+ 	</select>
+ 	
+ 	<!-- 查询安全事件攻击类型对应的数据 -->
+ 	<select id="findFeaturesValue" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secufeatures';
+ 	</select>
+ 	
+ 	<select id="findFeaturesNum" resultType="map">
+ 		SELECT
+ 			description id,
+			cfgitemvalue value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secufeatures';
+ 	</select>
+ 	
+ 	<!-- 查询事件影响类型对应的数据 -->
+ 	<select id="findEventTypeValue" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventtype';
+ 	</select>
+ 	
+ 	<select id="findEventTypeNum" resultType="map">
+ 		SELECT
+ 			description id,
+			cfgitemvalue value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventtype';
+ 	</select>
+ 	
+ 	<!-- 查询安全事件节点对应的数据 -->
+ 	<select id="findEventNodeValue" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventnode';
+ 	</select>
+ 	
+ 	<select id="findEventNodeNum" resultType="map">
+ 		SELECT
+ 			description id,
+			cfgitemvalue value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventnode';
+ 	</select>
+ 	
+ 	<!-- 查询安全事件来源对应的数据 -->
+ 	<select id="findEventSourceValue" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventsource';
+ 	</select>
+ 	
+ 	<select id="findEventSourceNum" resultType="map">
+ 		SELECT
+ 			description id,
+			cfgitemvalue value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventsource';
+ 	</select>
+ 	
+ 	<!-- 查询租户类型对应的数据 -->
+ 	<select id="findLesseeTypeValue" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'seculesseetype';
+ 	</select>
+ 	
+ 	<select id="findLesseeTypeNum" resultType="map">
+ 		SELECT
+ 			description id,
+			cfgitemvalue value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'seculesseetype';
+ 	</select>
+ 	
+ 	<!-- 查询安全事件状态对应的数据 -->
+ 	<select id="findEventStatusValue" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventstatus';
+ 	</select>
+ 	
+ 	<select id="findEventStatusNum" resultType="map">
+ 		SELECT
+ 			description id,
+			cfgitemvalue value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventstatus';
+ 	</select>
+ 	
+ 	<!-- 查询告警级别对应的数据 -->
+ 	<select id="findWarningLevelValue" resultType="map">
+ 		SELECT
+			cfgitemvalue id,
+			description value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secuwarninglevel';
+ 	</select>
+ 	
+ 	<select id="findWarningLevelNum" resultType="map">
+ 		SELECT
+ 			description id,
+			cfgitemvalue value
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secuwarninglevel';
+ 	</select>
+ 	
+ 	<!-- 查询安全事件详细信息 -->
+ 	<select id="findSecurityEventDetail" resultType="SecurityEvent">
+ 		SELECT
+			*
+		FROM
+			t_securityevent
+		WHERE
+			eventid = #{eventId};
+ 	</select>
+ 	
+ 	<!-- 安全事件查询ID -->
+ 	<select id="findIdBySecuFeatures" resultType="Integer" parameterType="String">
+ 		SELECT
+			cfgitemvalue
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secufeatures'
+		AND description = #{features} 
+	</select>
+	
+	<select id="findIdBySecuEventType" resultType="Integer" parameterType="String">
+		SELECT
+			cfgitemvalue
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventtype'
+		AND description = #{eventtype}
+	</select>
+	
+	<select id="findIdBySecuEventNode" resultType="Integer" parameterType="String">
+		SELECT
+			cfgitemvalue
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventnode'
+		AND description = #{eventnode}
+	</select>
+	
+	<select id="findIdBySecuEventSource" resultType="Integer" parameterType="String">
+		SELECT
+			cfgitemvalue
+		FROM
+			t_datadict
+		WHERE
+			cfgitemname = 'secueventsource'
+		AND description = #{eventsource};
+ 	</select>
+ 	<!-- 安全事件查询ID -->
+ 	
+ 	<!-- 批量插入数据 -->
+ 	<insert id="saveAllEvents" parameterType="java.util.List">
+ 			INSERT INTO t_securityevent (
+			eventId,
+			createDateTime,
+			updateDateTime,
+			lesseeIpaddr,
+			warning,
+			features,
+			result,
+			eventType,
+			eventNode,
+			eventLevel,
+			eventSource,
+			responsibility,
+			nodeResponsibility,
+			lesseeType,
+			eventStatus,
+			lastTraceDateTime,
+			warningLevel,
+			warningDays
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.eventId},#{item.createDateTime},#{item.updateDateTime},#{item.lesseeIpaddr},#{item.warning},#{item.features},#{item.result},#{item.eventType}
+			,#{item.eventNode},#{item.eventLevel},#{item.eventSource},#{item.responsibility},#{item.nodeResponsibility},#{item.lesseeType}
+			,#{item.eventStatus},#{item.lastTraceDateTime},#{item.warningLevel},#{item.warningDays})
+		</foreach>
+ 	</insert>
+ </mapper>
